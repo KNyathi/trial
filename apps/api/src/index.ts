@@ -3,7 +3,13 @@ import cors from 'cors';
 import { WebSocketServer } from 'ws';
 
 const app = express();
-app.use(cors());
+const allowedOrigins = (process.env.CORS_ORIGINS || '*').split(',');
+app.use(cors({ origin: (origin, cb) => {
+  if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+    return cb(null, true);
+  }
+  return cb(new Error('Not allowed by CORS'));
+}, credentials: true }));
 app.use(express.json());
 
 const port = Number(process.env.PORT || 4000);

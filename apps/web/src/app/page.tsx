@@ -1,4 +1,5 @@
 import Image from "next/image";
+import * as React from "react";
 
 export default function Home() {
   return (
@@ -24,6 +25,12 @@ export default function Home() {
             Save and see your changes instantly.
           </li>
         </ol>
+
+        <div className="mt-6 text-center sm:text-left">
+          <h1 className="text-2xl font-bold">Traffic Surveillance</h1>
+          <p className="text-gray-500">Backend health check:</p>
+          <HealthCheck />
+        </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
@@ -100,4 +107,18 @@ export default function Home() {
       </footer>
     </div>
   );
+}
+
+function HealthCheck() {
+  const [status, setStatus] = React.useState<string>("Checking...");
+  React.useEffect(() => {
+    const base = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+    fetch(`${base}/health`)
+      .then((r) => {
+        if (r.ok) setStatus("OK");
+        else setStatus("DOWN");
+      })
+      .catch(() => setStatus("DOWN"));
+  }, []);
+  return <div className="mt-2 font-mono">{status}</div>;
 }

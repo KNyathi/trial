@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "apps/web/next.config.ts", "use": "@vercel/next" }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "https://YOUR-API-URL"
+  },
+  "framework": "nextjs"
+}
